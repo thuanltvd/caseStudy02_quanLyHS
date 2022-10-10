@@ -1,5 +1,7 @@
 import java.io.*;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
@@ -25,17 +27,22 @@ Scanner sc = new Scanner(System.in);
     }
     @Override
     public void add() {
-        testScoreList = new ArrayList<>();
         TestScore newTestScoreList = input();
         testScoreList.add(newTestScoreList);
         saveFile();
     }
-
+    public TestScore searchByName(String searchName){
+        for (TestScore testScore : testScoreList){
+            if(testScore.getPupilID().equals(searchName)){
+                return testScore;
+            }
+        }return null;
+    }
     public List<TestScore> searchByID(String ID) {
         List<TestScore> findingTestScores = new ArrayList<>();
         for (TestScore score : testScoreList) {
             if (score.getPupilID().equals(ID)) findingTestScores.add(score);
-
+            System.out.println(score);
         }
         return findingTestScores;
     }
@@ -44,7 +51,7 @@ Scanner sc = new Scanner(System.in);
         System.out.println("nhập scoreID cần tìm: ");
         String searchID = sc.nextLine();
         System.out.println("searchID: " + searchID);
-        List<TestScore> searchScoreID = searchByID(searchID);
+        TestScore searchScoreID = searchByName(searchID);
         if (searchScoreID != null) {
 
             System.out.println(searchScoreID);
@@ -55,7 +62,7 @@ Scanner sc = new Scanner(System.in);
     public void remove() {
         System.out.println("nhập ID cần tìm");
         String searchID = sc.nextLine();
-        List<TestScore> removeID = searchByID(searchID);
+        TestScore removeID = searchByName(searchID);
         if (removeID != null) {
             testScoreList.remove(removeID);
             System.out.println("searchID đã xóa khỏi danh sách");
@@ -66,18 +73,18 @@ Scanner sc = new Scanner(System.in);
     }
     @Override
     public void update() {
-        System.out.println("nhập ID cần update");
-        String searchID = sc.nextLine();
-        List<TestScore> updateID = searchByID(searchID);
-        if (updateID != null) {
-            System.out.println("ID cần update là");
-            TestScore NameUpdate = input();
-            updateID.set(4,NameUpdate);
-            System.out.println(updateID.toString());
-            saveFile();
+        System.out.println("nhập Name cần update");
+        String searchName = sc.nextLine();
+        TestScore updateName = searchByName(searchName);
+        if (updateName != null) {
+            System.out.println("Name cần update là");
+            String nameUpdate = sc.nextLine();
+            updateName.setPupilID(nameUpdate);
+            System.out.println(updateName.toString());
+
         } else
             System.out.println("updateID không tồn tại");
-
+        saveFile();
     }
 
     public double totalScore() {
@@ -86,8 +93,9 @@ Scanner sc = new Scanner(System.in);
 
             for (TestScore testScore : testScoreList) {
                 System.out.println("nhập pupilId cần tính tổng");
-                String pupilID = sc.nextLine();
-                if (testScore.getPupilID().equals(pupilID)) {
+                String pupilScore = sc.nextLine();
+                List<TestScore> pupilId = searchByID(pupilScore);
+                if (testScore.getPupilID().equals(pupilScore)) {
                     for(int i = 0; i < testScoreList.size();i++){
                         sum += testScore.getScore();
                         count++;
@@ -192,6 +200,12 @@ Scanner sc = new Scanner(System.in);
                     break;
                 case 5:
                     displayAll();
+                    break;
+                case 6:
+                    readFromFile();
+                    break;
+                case 7:
+                    saveFile();
                     break;
                 case 8:
                     totalScore();

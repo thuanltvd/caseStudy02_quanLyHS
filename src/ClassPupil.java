@@ -1,28 +1,43 @@
 
 import java.util.List;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ClassPupil {
+
+    private static Pattern pattern;
+    private Matcher matcher;
+
+    private static final String CLASSNAME_REGEX =   "^C[1-5]A0[1-9]$";
+
+    public ClassPupil() {
+        pattern = Pattern.compile(CLASSNAME_REGEX);
+    }
+
+    public boolean validate(String regex) {
+        matcher = pattern.matcher(regex);
+        return matcher.matches();
+    }
 
     Pupilmanagement pupilmanagement = new Pupilmanagement();
     private String className;
     private String teacherName;
-    private String SL;
+    private int amount;
     Scanner sc = new Scanner(System.in);
 
-    public ClassPupil(String className, String teacherName,String SL) {
-        this.SL = SL;
+    public ClassPupil(String className, String teacherName,int amount) {
         this.className = className;
         this.teacherName = teacherName;
-
+        this.amount = amount;
     }
 
-    public String getSL() {
-        return SL;
+    public int getAmount() {
+        return amount;
     }
 
-    public void setSL(String SL) {
-        this.SL = SL;
+    public void setAmount(int amount) {
+        this.amount = amount;
     }
 
     public String getClassName() {
@@ -42,7 +57,7 @@ public class ClassPupil {
     }
     @Override
     public String toString(){
-        return className+","+teacherName+","+SL;
+        return className+","+teacherName+","+amount;
     }
 
 

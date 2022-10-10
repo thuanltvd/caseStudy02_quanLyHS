@@ -20,7 +20,7 @@ public class ClassPupilManagement extends Menu implements Management{
             String s;
             while ((s = bufferedReader.readLine()) != null) {
                 String [] ss = s.split(",");
-                ClassPupil c = new ClassPupil(ss[0],ss[1],ss[2]);
+                ClassPupil c = new ClassPupil(ss[0],ss[1],Integer.parseInt(ss[2]));
                 classPupilList.add(c);
             }
             bufferedReader.close();
@@ -50,16 +50,14 @@ public class ClassPupilManagement extends Menu implements Management{
     }
 
     public ClassPupil input(){
-
-        System.out.println("Nhập tên lớp học");
-        String className = sc.nextLine();
-        System.out.println("Nhập tên Giáo viên");
-        String teacherName = sc.nextLine();
-        System.out.println("Nhập số lượng");
-        String sol = sc.nextLine();
-
-
-        ClassPupil newClassPupil = new ClassPupil(className,teacherName,sol);
+        ClassPupil classPupil = new ClassPupil();
+            System.out.println("Nhập tên lớp học");
+            String className = sc.nextLine();
+            System.out.println("Nhập tên Giáo viên");
+            String teacherName = sc.nextLine();
+            System.out.println("Nhập số lượng");
+            int amount = Integer.parseInt(sc.nextLine());
+           ClassPupil newClassPupil = new ClassPupil(className,teacherName, amount);
 
         return newClassPupil;
     }
@@ -73,8 +71,15 @@ public class ClassPupilManagement extends Menu implements Management{
     }
     @Override
     public void add(){
+        boolean check;
+    do{
         ClassPupil classPupil1 = input();
-        classPupilList.add(classPupil1);
+        check = classPupil1.validate(classPupil1.getClassName());
+        if (check) {
+            classPupilList.add(classPupil1);
+            break;
+        }else System.out.println("nhap lai ten lop: ");
+    }while(check == false);
         saveFile();
     }
     @Override
